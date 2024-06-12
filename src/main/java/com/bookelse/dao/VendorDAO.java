@@ -4,6 +4,8 @@ import com.bookelse.config.ApplicationContextConfiguration;
 import com.bookelse.dao.executor.InsertQueryExecutor;
 import com.bookelse.dao.executor.SelectQueryExecutor;
 import com.bookelse.dao.mapper.VendorRowMapper;
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.VendorId;
 import com.bookelse.model.vendor.Vendor;
 import com.bookelse.util.datetime.DateTimeUtility;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,10 +21,13 @@ import org.springframework.stereotype.Repository;
 @PropertySource("classpath:sql/vendor-query.properties")
 public class VendorDAO {
   private final JdbcTemplate jdbcTemplate;
+
   @Value("${vendor.add-vendor}")
   private String insertNewVendorQuery;
+
   @Value("${vendor.is-vendor-exist-by-vendor-id}")
   private String isVendorExistByVendorIdQuery;
+
   @Value("${vendor.get-vendor-by-id}")
   private String getVendorByIdQuery;
 
@@ -48,9 +54,16 @@ public class VendorDAO {
   }
 
   public Boolean isVendorExist(VendorId vendorId) {
-    Integer count =
-        jdbcTemplate.queryForObject(isVendorExistByVendorIdQuery, Integer.class, vendorId.getId());
-    return count != null && count > 0;
+    try {
+      Integer count =
+          jdbcTemplate.queryForObject(
+              isVendorExistByVendorIdQuery, Integer.class, vendorId.getId());
+      return count != null && count > 0;
+    } catch (DataAccessException e) {
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);
+      throw runtimeExceptionAuditable;
+    }
   }
 
   public Optional<Vendor> getVendorDetails(VendorId vendorId) throws SQLException {

@@ -1,5 +1,7 @@
 package com.bookelse.dao.mapper;
 
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -20,7 +22,9 @@ public abstract class CustomRowMapper<T> implements RowMapper<T> {
         this.columns.add(resultSetMetaData.getColumnName(i));
       }
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);
+      throw runtimeExceptionAuditable;
     }
     return this.columns;
   }

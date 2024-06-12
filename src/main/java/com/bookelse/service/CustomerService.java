@@ -1,7 +1,10 @@
 package com.bookelse.service;
 
 import com.bookelse.dao.CustomerDAO;
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.exceptions.UserNotFoundException;
 import com.bookelse.model.common.Password;
+import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.user.Customer;
 import com.bookelse.model.user.UserCredentials;
 import com.bookelse.payload.customer.CustomerBankAccountUpdateRequestPayload;
@@ -25,7 +28,7 @@ public class CustomerService implements UserService<Customer> {
     try {
       return customerDAO.registerUserInDB(customer);
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeExceptionAuditable(e);
     }
   }
 
@@ -58,14 +61,18 @@ public class CustomerService implements UserService<Customer> {
   }
 
   @Override
-  public Customer getUserById(String id) {
+  public Customer getUserById(String id) throws UserNotFoundException {
     Optional<Customer> customer;
     try {
       customer = customerDAO.getUserById(id);
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-    return customer.orElse(null);
+    if (customer.isPresent()) {
+      return customer.get();
+    } else {
+      throw new UserNotFoundException(id).wrapAuditableException(id, ExceptionSeverity.LOW);
+    }
   }
 
   @Override

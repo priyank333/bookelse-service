@@ -1,9 +1,12 @@
 package com.bookelse.dao.executor;
 
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,8 +23,14 @@ public class SelectQueryExecutor<R extends RowMapper<O>, O> extends SQLQueryExec
 
   @Override
   public void execute() {
-    this.output =
-        getJdbcTemplate().queryForStream(getQuery(), getRowMapper(), convertArgsIntoObjectArr());
+    try {
+      this.output =
+          getJdbcTemplate().queryForStream(getQuery(), getRowMapper(), convertArgsIntoObjectArr());
+    } catch (DataAccessException e) {
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);
+      throw runtimeExceptionAuditable;
+    }
   }
 
   public R getRowMapper() {
@@ -33,8 +42,13 @@ public class SelectQueryExecutor<R extends RowMapper<O>, O> extends SQLQueryExec
   }
 
   public Optional<O> getFirstResult() {
-    Objects.requireNonNull(output);
-
+    try {
+      Objects.requireNonNull(output);
+    } catch (NullPointerException e) {
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.LOW);
+      throw runtimeExceptionAuditable;
+    }
     return output.findFirst();
   }
 }

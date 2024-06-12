@@ -2,6 +2,8 @@ package com.bookelse.model.common;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -43,7 +45,7 @@ public class Password implements Serializable {
       byte[] hash = skf.generateSecret(spec).getEncoded();
       return Base64.getEncoder().encodeToString(hash);
     } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-      throw new RuntimeException("Error hashing password: " + e.getMessage());
+      throw new RuntimeExceptionAuditable(e).wrapAuditableException("", ExceptionSeverity.HIGH);
     }
   }
 

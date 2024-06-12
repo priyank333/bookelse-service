@@ -1,6 +1,6 @@
 package com.bookelse.model.product;
 
-import com.bookelse.util.JSONUtil;
+import com.bookelse.util.json.JSONUtil;
 import java.util.HashMap;
 
 public class ProductFeatures extends HashMap<String, String> {

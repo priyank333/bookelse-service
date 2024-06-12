@@ -6,6 +6,8 @@ import com.bookelse.dao.executor.SelectQueryExecutor;
 import com.bookelse.dao.executor.UpdateQueryExecutor;
 import com.bookelse.dao.mapper.CustomerCredentialsRowMapper;
 import com.bookelse.dao.mapper.CustomerRowMapper;
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.user.Customer;
 import com.bookelse.model.user.UserCredentials;
 import com.bookelse.payload.customer.CustomerBankAccountUpdateRequestPayload;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,20 +27,28 @@ import org.springframework.stereotype.Repository;
 public class CustomerDAO implements UserDAO<Customer> {
 
   private final JdbcTemplate jdbcTemplate;
+
   @Value("${customer.insert-new-customer-data}")
   private String insertNewCustomerDataQuery;
+
   @Value("${customer.select-customer-cred}")
   private String selectCustomerCredQuery;
+
   @Value("${customer.select-customer}")
   private String selectCustomerByUserIdQuery;
+
   @Value("${customer.select-all-customers}")
   private String selectAllCustomersQuery;
+
   @Value("${customer.is-email-exist}")
   private String isEmailExistQuery;
+
   @Value("${customer.is-customer-exist}")
   private String isCustomerExistQuery;
+
   @Value("${customer.update-postal-address}")
   private String updatePostalAddressQuery;
+
   @Value("${customer.update-bank-acc}")
   private String updateBankAccountQuery;
 
@@ -48,6 +59,7 @@ public class CustomerDAO implements UserDAO<Customer> {
 
   @Override
   public Customer registerUserInDB(Customer user) throws SQLException {
+
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(insertNewCustomerDataQuery, jdbcTemplate);
     insertQueryExecutor
@@ -96,13 +108,25 @@ public class CustomerDAO implements UserDAO<Customer> {
 
   @Override
   public Boolean isUserExist(String userId) {
-    Integer count = jdbcTemplate.queryForObject(isCustomerExistQuery, Integer.class, userId);
-    return count != null && count > 0;
+    try {
+      Integer count = jdbcTemplate.queryForObject(isCustomerExistQuery, Integer.class, userId);
+      return count != null && count > 0;
+    } catch (DataAccessException e) {
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);
+      throw runtimeExceptionAuditable;
+    }
   }
 
   public Boolean isEmailExist(String emailId) {
-    Integer count = jdbcTemplate.queryForObject(isEmailExistQuery, Integer.class, emailId);
-    return count != null && count > 0;
+    try {
+      Integer count = jdbcTemplate.queryForObject(isEmailExistQuery, Integer.class, emailId);
+      return count != null && count > 0;
+    } catch (DataAccessException e) {
+      RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
+      runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);
+      throw runtimeExceptionAuditable;
+    }
   }
 
   public Boolean updatePostalAddress(

@@ -190,3 +190,18 @@ CREATE TABLE IF NOT EXISTS bookelse.db_tbl_audit
     created_on      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT db_tbl_audit_pkey PRIMARY KEY (db_tbl_audit_id)
 );
+
+CREATE TABLE IF NOT EXISTS bookelse.exception_audit
+(
+    id                  VARCHAR(50),
+    user_id             VARCHAR(50)                 NOT NULL,
+    exception_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    exception_type      TEXT                        NOT NULL,
+    stack_trace         TEXT                        NOT NULL,
+    detailed_msg        TEXT                        NOT NULL,
+    environment         VARCHAR(25)                 NOT NULL,
+    severity            VARCHAR(10)                 NOT NULL,
+    correlation_id      VARCHAR(50)                 NOT NULL,
+    additional_data     JSONB,
+    web_request         JSONB
+);

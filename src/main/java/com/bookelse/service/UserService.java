@@ -10,7 +10,7 @@ public interface UserService<T extends User> {
 
   Boolean validateUserCredentials(String id, String password);
 
-  T getUserById(String id);
+  T getUserById(String id) throws Throwable;
 
   Boolean isUserExist(String id);
 }

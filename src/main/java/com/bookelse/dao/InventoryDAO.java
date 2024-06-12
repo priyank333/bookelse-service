@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 public class InventoryDAO {
 
   protected final JdbcTemplate jdbcTemplate;
+
   @Value("${inventory.add-inventories}")
   private String addProductBookQuery;
 
