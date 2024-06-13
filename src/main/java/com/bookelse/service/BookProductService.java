@@ -7,7 +7,6 @@ import com.bookelse.model.product.Book;
 import com.bookelse.model.values.BigDecimalValue;
 import com.bookelse.payload.product.NewBookProductAddRequestPayload;
 import com.bookelse.util.datetime.DateTimeUtility;
-import java.sql.SQLException;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,11 +28,7 @@ public class BookProductService extends ProductService
   @Override
   public Book addProduct(NewBookProductAddRequestPayload productRequestPayload) {
     Book book = buildProduct(productRequestPayload);
-    try {
-      return bookProductDAO.addProduct(book);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    return bookProductDAO.addProduct(book);
   }
 
   private Book buildProduct(NewBookProductAddRequestPayload productRequestPayload) {

@@ -9,7 +9,6 @@ import com.bookelse.model.product.Product;
 import com.bookelse.model.values.BigDecimalValue;
 import com.bookelse.payload.inventory.UpdateProductInventoryRequestPayload;
 import com.bookelse.util.datetime.DateTimeUtility;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -38,11 +37,7 @@ public class InventoryService<PType extends Product> {
         && productService.isProductExist(
             new ProductId(updateProductInventoryRequestPayload.productId()))) {
       List<Inventory<?>> inventories = buildInventories(updateProductInventoryRequestPayload);
-      try {
-        noOfRowsAffected = inventoryDAO.addInventoriesInDB(inventories);
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      }
+      noOfRowsAffected = inventoryDAO.addInventoriesInDB(inventories);
     }
     return noOfRowsAffected;
   }

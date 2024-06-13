@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class VendorRowMapper extends CustomRowMapper<Vendor> {
   @Override
-  public Vendor mapRow(ResultSet rs, int rowNum) throws SQLException {
+  public Vendor mapRow(ResultSet rs, int rowNum) {
     Set<String> columns = loadColumns(rs);
     if (!columns.contains("vendor_id")) {
       RuntimeExceptionAuditable runtimeExceptionAuditable =

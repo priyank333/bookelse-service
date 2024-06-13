@@ -10,7 +10,7 @@ public class InsertQueryExecutor<E> extends SQLQueryExecutor {
 
   private int noOfRowsAffected;
 
-  public InsertQueryExecutor(String query, JdbcTemplate jdbcTemplate) throws SQLException {
+  public InsertQueryExecutor(String query, JdbcTemplate jdbcTemplate) {
     super(query, jdbcTemplate);
   }
 

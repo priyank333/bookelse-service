@@ -15,8 +15,7 @@ public class SelectQueryExecutor<R extends RowMapper<O>, O> extends SQLQueryExec
   private final R rowMapper;
   private Stream<O> output;
 
-  public SelectQueryExecutor(String query, JdbcTemplate jdbcTemplate, R rowMapper)
-      throws SQLException {
+  public SelectQueryExecutor(String query, JdbcTemplate jdbcTemplate, R rowMapper) {
     super(query, jdbcTemplate);
     this.rowMapper = rowMapper;
   }

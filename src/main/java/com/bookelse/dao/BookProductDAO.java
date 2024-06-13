@@ -17,7 +17,7 @@ public class BookProductDAO extends ProductDAO implements ProductDAOIN<Book> {
   private String addProductBookQuery;
 
   @Override
-  public Book addProduct(Book book) throws SQLException {
+  public Book addProduct(Book book) {
     Product product = addInProductTable(book);
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(addProductBookQuery, jdbcTemplate);

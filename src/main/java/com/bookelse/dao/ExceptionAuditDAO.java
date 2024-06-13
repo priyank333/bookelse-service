@@ -24,7 +24,7 @@ public class ExceptionAuditDAO {
   }
 
   public <T extends Throwable> AuditableExceptionWrapper<T> addExceptionAudit(
-      AuditableExceptionWrapper<T> auditableExceptionWrapper) throws SQLException {
+      AuditableExceptionWrapper<T> auditableExceptionWrapper) {
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(addExceptionAuditQuery, jdbcTemplate);
     insertQueryExecutor

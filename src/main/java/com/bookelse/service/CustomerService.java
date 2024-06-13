@@ -1,7 +1,6 @@
 package com.bookelse.service;
 
 import com.bookelse.dao.CustomerDAO;
-import com.bookelse.exceptions.RuntimeExceptionAuditable;
 import com.bookelse.exceptions.UserNotFoundException;
 import com.bookelse.model.common.Password;
 import com.bookelse.model.exception.ExceptionSeverity;
@@ -9,7 +8,6 @@ import com.bookelse.model.user.Customer;
 import com.bookelse.model.user.UserCredentials;
 import com.bookelse.payload.customer.CustomerBankAccountUpdateRequestPayload;
 import com.bookelse.payload.customer.CustomerPostalAddressUpdateRequestPayload;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,30 +23,18 @@ public class CustomerService implements UserService<Customer> {
 
   @Override
   public Customer registerUser(Customer customer) {
-    try {
-      return customerDAO.registerUserInDB(customer);
-    } catch (SQLException e) {
-      throw new RuntimeExceptionAuditable(e);
-    }
+    return customerDAO.registerUserInDB(customer);
   }
 
   @Override
   public List<Customer> listAllUsers() {
-    try {
-      return customerDAO.listAllUsers();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    return customerDAO.listAllUsers();
   }
 
   @Override
   public Boolean validateUserCredentials(String id, String password) {
     Optional<UserCredentials> userCredentialsOptional;
-    try {
-      userCredentialsOptional = customerDAO.getUserCredentials(id);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    userCredentialsOptional = customerDAO.getUserCredentials(id);
     if (userCredentialsOptional.isPresent()) {
       Password existingPassword =
           Password.createExistingPasswordObject(
@@ -63,11 +49,7 @@ public class CustomerService implements UserService<Customer> {
   @Override
   public Customer getUserById(String id) throws UserNotFoundException {
     Optional<Customer> customer;
-    try {
-      customer = customerDAO.getUserById(id);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    customer = customerDAO.getUserById(id);
     if (customer.isPresent()) {
       return customer.get();
     } else {
@@ -86,19 +68,11 @@ public class CustomerService implements UserService<Customer> {
 
   public Boolean updatePostalAddress(
       CustomerPostalAddressUpdateRequestPayload customerPostalAddressUpdateRequestPayload) {
-    try {
-      return customerDAO.updatePostalAddress(customerPostalAddressUpdateRequestPayload);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    return customerDAO.updatePostalAddress(customerPostalAddressUpdateRequestPayload);
   }
 
   public Boolean updateBankAccount(
       CustomerBankAccountUpdateRequestPayload customerBankAccountUpdateRequestPayload) {
-    try {
-      return customerDAO.updateBankAccount(customerBankAccountUpdateRequestPayload);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    return customerDAO.updateBankAccount(customerBankAccountUpdateRequestPayload);
   }
 }

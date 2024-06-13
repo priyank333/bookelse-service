@@ -7,7 +7,6 @@ import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.ProductId;
 import com.bookelse.model.product.Product;
 import com.bookelse.util.datetime.DateTimeUtility;
-import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataAccessException;
@@ -43,7 +42,7 @@ public class ProductDAO {
     }
   }
 
-  protected Product addInProductTable(Product product) throws SQLException {
+  protected Product addInProductTable(Product product)  {
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(addProductQuery, jdbcTemplate);
     insertQueryExecutor

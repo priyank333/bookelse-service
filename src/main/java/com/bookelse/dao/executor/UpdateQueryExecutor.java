@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class UpdateQueryExecutor<E> extends SQLQueryExecutor {
   private int noOfRowsAffected;
 
-  public UpdateQueryExecutor(String query, JdbcTemplate jdbcTemplate) throws SQLException {
+  public UpdateQueryExecutor(String query, JdbcTemplate jdbcTemplate) {
     super(query, jdbcTemplate);
   }
 

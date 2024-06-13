@@ -13,7 +13,6 @@ import com.bookelse.model.user.UserCredentials;
 import com.bookelse.payload.customer.CustomerBankAccountUpdateRequestPayload;
 import com.bookelse.payload.customer.CustomerPostalAddressUpdateRequestPayload;
 import com.bookelse.util.datetime.DateTimeUtility;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +57,7 @@ public class CustomerDAO implements UserDAO<Customer> {
   }
 
   @Override
-  public Customer registerUserInDB(Customer user) throws SQLException {
+  public Customer registerUserInDB(Customer user)  {
 
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(insertNewCustomerDataQuery, jdbcTemplate);
@@ -79,7 +78,7 @@ public class CustomerDAO implements UserDAO<Customer> {
   }
 
   @Override
-  public Optional<UserCredentials> getUserCredentials(String id) throws SQLException {
+  public Optional<UserCredentials> getUserCredentials(String id)  {
     SelectQueryExecutor<CustomerCredentialsRowMapper, UserCredentials> selectQueryExecutor =
         new SelectQueryExecutor<>(
             selectCustomerCredQuery, jdbcTemplate, new CustomerCredentialsRowMapper());
@@ -89,7 +88,7 @@ public class CustomerDAO implements UserDAO<Customer> {
   }
 
   @Override
-  public Optional<Customer> getUserById(String id) throws SQLException {
+  public Optional<Customer> getUserById(String id)  {
     SelectQueryExecutor<CustomerRowMapper, Customer> selectQueryExecutor =
         new SelectQueryExecutor<>(
             selectCustomerByUserIdQuery, jdbcTemplate, new CustomerRowMapper());
@@ -99,7 +98,7 @@ public class CustomerDAO implements UserDAO<Customer> {
   }
 
   @Override
-  public List<Customer> listAllUsers() throws SQLException {
+  public List<Customer> listAllUsers()  {
     SelectQueryExecutor<CustomerRowMapper, Customer> selectQueryExecutor =
         new SelectQueryExecutor<>(selectAllCustomersQuery, jdbcTemplate, new CustomerRowMapper());
     selectQueryExecutor.execute();
@@ -131,7 +130,7 @@ public class CustomerDAO implements UserDAO<Customer> {
 
   public Boolean updatePostalAddress(
       CustomerPostalAddressUpdateRequestPayload customerPostalAddressUpdateRequestPayload)
-      throws SQLException {
+       {
     UpdateQueryExecutor<?> updateQueryExecutor =
         new UpdateQueryExecutor<>(updatePostalAddressQuery, jdbcTemplate);
     updateQueryExecutor
@@ -150,7 +149,7 @@ public class CustomerDAO implements UserDAO<Customer> {
 
   public Boolean updateBankAccount(
       CustomerBankAccountUpdateRequestPayload customerBankAccountUpdateRequestPayload)
-      throws SQLException {
+       {
     UpdateQueryExecutor<?> updateQueryExecutor =
         new UpdateQueryExecutor<>(updateBankAccountQuery, jdbcTemplate);
     updateQueryExecutor

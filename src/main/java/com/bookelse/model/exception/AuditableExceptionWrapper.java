@@ -5,7 +5,6 @@ import com.bookelse.dao.ExceptionAuditDAO;
 import com.bookelse.model.exception.request.ServletWebRequest;
 import com.bookelse.model.id.ExceptionId;
 import com.bookelse.util.json.JSONUtil;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.core.task.TaskExecutor;
@@ -126,13 +125,9 @@ public class AuditableExceptionWrapper<T extends Throwable> {
               ExceptionAuditDAO exceptionAuditDAO =
                   ApplicationContextConfiguration.getApplicationContext()
                       .getBean(ExceptionAuditDAO.class);
-              try {
-                insertedObj = exceptionAuditDAO.addExceptionAudit(this);
-                if (Objects.isNull(insertedObj)) {
-                  throw new RuntimeException("Exception audit is not working");
-                }
-              } catch (SQLException e) {
-                throw new RuntimeException(e);
+              insertedObj = exceptionAuditDAO.addExceptionAudit(this);
+              if (Objects.isNull(insertedObj)) {
+                throw new RuntimeException("Exception audit is not working");
               }
             });
   }

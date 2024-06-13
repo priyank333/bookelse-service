@@ -1,5 +1,7 @@
 package com.bookelse.dao.executor;
 
+import com.bookelse.exceptions.RuntimeExceptionAuditable;
+import com.bookelse.model.exception.ExceptionSeverity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -13,14 +15,19 @@ public abstract class SQLQueryExecutor {
   private final DataSource dataSource;
   private final Connection connection;
 
-  public SQLQueryExecutor(String query, JdbcTemplate jdbcTemplate) throws SQLException {
+  public SQLQueryExecutor(String query, JdbcTemplate jdbcTemplate) {
     this.query = query;
     this.jdbcTemplate = jdbcTemplate;
     this.dataSource = this.jdbcTemplate.getDataSource();
     if (this.dataSource != null) {
-      this.connection = this.dataSource.getConnection();
+      try {
+        this.connection = this.dataSource.getConnection();
+      } catch (SQLException e) {
+        throw new RuntimeExceptionAuditable(e).wrapAuditableException("", ExceptionSeverity.HIGH);
+      }
     } else {
-      throw new RuntimeException("DB Connection is required");
+      throw new RuntimeExceptionAuditable("DB Connection is required")
+          .wrapAuditableException("", ExceptionSeverity.HIGH);
     }
     this.arguments = new LinkedList<>();
   }

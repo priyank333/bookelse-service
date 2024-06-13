@@ -9,7 +9,6 @@ import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.VendorId;
 import com.bookelse.model.vendor.Vendor;
 import com.bookelse.util.datetime.DateTimeUtility;
-import java.sql.SQLException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -36,7 +35,7 @@ public class VendorDAO {
         ApplicationContextConfiguration.getApplicationContext().getBean(JdbcTemplate.class);
   }
 
-  public Vendor addVendorInDB(Vendor vendor) throws SQLException {
+  public Vendor addVendorInDB(Vendor vendor)  {
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(insertNewVendorQuery, jdbcTemplate);
     insertQueryExecutor
@@ -66,7 +65,7 @@ public class VendorDAO {
     }
   }
 
-  public Optional<Vendor> getVendorDetails(VendorId vendorId) throws SQLException {
+  public Optional<Vendor> getVendorDetails(VendorId vendorId)  {
     SelectQueryExecutor<VendorRowMapper, Vendor> selectQueryExecutor =
         new SelectQueryExecutor<>(getVendorByIdQuery, jdbcTemplate, new VendorRowMapper());
     selectQueryExecutor.addArgument(vendorId.getId());

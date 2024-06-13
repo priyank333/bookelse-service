@@ -2,7 +2,6 @@ package com.bookelse.dao.executor;
 
 import com.bookelse.exceptions.RuntimeExceptionAuditable;
 import com.bookelse.model.exception.ExceptionSeverity;
-import java.sql.SQLException;
 import java.util.Arrays;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -16,7 +15,7 @@ public class BatchInsertQueryExecutor extends SQLQueryExecutor {
       String query,
       BatchPreparedStatementSetter batchPreparedStatementSetter,
       JdbcTemplate jdbcTemplate)
-      throws SQLException {
+       {
     super(query, jdbcTemplate);
     this.batchPreparedStatementSetter = batchPreparedStatementSetter;
   }
