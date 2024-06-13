@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
   public FilterRegistrationBean<CorrelationIdFilter> correlationIdFilter() {
     FilterRegistrationBean<CorrelationIdFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(correlationIdFilter);
-    registrationBean.addUrlPatterns("/**");
+    registrationBean.addUrlPatterns("/*");
     return registrationBean;
   }
 

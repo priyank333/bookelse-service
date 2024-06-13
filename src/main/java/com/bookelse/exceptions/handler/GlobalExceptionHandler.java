@@ -3,9 +3,10 @@ package com.bookelse.exceptions.handler;
 import com.bookelse.exceptions.RuntimeExceptionAuditable;
 import com.bookelse.exceptions.UserNotFoundException;
 import com.bookelse.model.exception.AuditableExceptionWrapper;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -18,6 +19,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+  private static Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
   @ExceptionHandler(value = UserNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public @ResponseBody ErrorResponse handleUserNotFoundException(
@@ -28,6 +31,7 @@ public class GlobalExceptionHandler {
     ErrorResponse errorResponse =
         ErrorResponse.builder(e, ProblemDetail.forStatus(HttpStatus.NOT_FOUND)).detail("").build();
     auditableExceptionWrapper.auditInDB();
+    LOGGER.warn("User not found : {}", auditableExceptionWrapper);
     return errorResponse;
   }
 
@@ -44,6 +48,7 @@ public class GlobalExceptionHandler {
             .build();
     auditableExceptionWrapper.captureServletWebRequest(webRequest);
     auditableExceptionWrapper.auditInDB();
+    LOGGER.error("DataAccessException : {}", auditableExceptionWrapper);
     return errorResponse;
   }
 
@@ -59,6 +64,7 @@ public class GlobalExceptionHandler {
             .build();
     auditableExceptionWrapper.captureServletWebRequest(webRequest);
     auditableExceptionWrapper.auditInDB();
+    LOGGER.error("RuntimeException : {}", auditableExceptionWrapper);
     return errorResponse;
   }
 
@@ -72,6 +78,7 @@ public class GlobalExceptionHandler {
             .detail("")
             .build();
     auditableExceptionWrapper.auditInDB();
+    LOGGER.error("InvalidKeySpecException : {}", auditableExceptionWrapper);
     return errorResponse;
   }
 
@@ -85,6 +92,7 @@ public class GlobalExceptionHandler {
             .detail("")
             .build();
     auditableExceptionWrapper.auditInDB();
+    LOGGER.error("NoSuchAlgorithmException : {}", auditableExceptionWrapper);
     return errorResponse;
   }
 }

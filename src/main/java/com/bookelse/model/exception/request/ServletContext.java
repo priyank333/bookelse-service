@@ -1,6 +1,7 @@
 package com.bookelse.model.exception.request;
 
 import java.util.Map;
+import java.util.StringJoiner;
 
 public class ServletContext {
   private final String contextPath;
@@ -29,5 +30,19 @@ public class ServletContext {
     this.servletContextName = servletContextName;
     this.sessionTimeout = sessionTimeout;
     this.virtualServerName = virtualServerName;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ServletContext.class.getSimpleName() + "[", "]")
+        .add("attributes=" + attributes)
+        .add("contextPath='" + contextPath + "'")
+        .add("initParameters=" + initParameters)
+        .add("requestCharacterEncoding='" + requestCharacterEncoding + "'")
+        .add("serverInfo='" + serverInfo + "'")
+        .add("servletContextName='" + servletContextName + "'")
+        .add("virtualServerName='" + virtualServerName + "'")
+        .add("sessionTimeout=" + sessionTimeout)
+        .toString();
   }
 }

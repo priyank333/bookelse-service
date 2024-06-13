@@ -153,4 +153,32 @@ public class ServletWebRequest {
         session.getLastAccessedTime(),
         session.getMaxInactiveInterval());
   }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ServletWebRequest.class.getSimpleName() + "[", "]")
+        .add("authType='" + authType + "'")
+        .add("requestURI='" + requestURI + "'")
+        .add("cookies=" + cookies)
+        .add("contextPath='" + contextPath + "'")
+        .add("headers=" + headers)
+        .add("method='" + method + "'")
+        .add("parameters=" + parameters)
+        .add("queryString='" + queryString + "'")
+        .add("remoteAddress='" + remoteAddress + "'")
+        .add("remoteHost='" + remoteHost + "'")
+        .add("requestURL='" + requestURL + "'")
+        .add("schema='" + schema + "'")
+        .add("serverName='" + serverName + "'")
+        .add("serverPort=" + serverPort)
+        .add("servletPath='" + servletPath + "'")
+        .add("servletContext=" + servletContext)
+        .add("remoteUser='" + remoteUser + "'")
+        .add("trailerFields=" + trailerFields)
+        .add("pathInfo='" + pathInfo + "'")
+        .add("pathTranslated='" + pathTranslated + "'")
+        .add("requestedSessionId='" + requestedSessionId + "'")
+        .add("servletSession=" + servletSession)
+        .toString();
+  }
 }

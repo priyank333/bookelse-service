@@ -3,6 +3,7 @@ package com.bookelse.exceptions;
 import com.bookelse.model.exception.AuditableExceptionWrapper;
 import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.ExceptionId;
+import org.slf4j.MDC;
 
 public class RuntimeExceptionAuditable extends RuntimeException implements AuditableException {
   protected AuditableExceptionWrapper<?> auditableExceptionWrapper;
@@ -20,7 +21,11 @@ public class RuntimeExceptionAuditable extends RuntimeException implements Audit
       String userId, ExceptionSeverity exceptionSeverity) {
     this.auditableExceptionWrapper =
         new AuditableExceptionWrapper<>(
-            new ExceptionId(), super.getCause(), userId, exceptionSeverity);
+            new ExceptionId(),
+            MDC.get("correlationId"),
+            super.getCause(),
+            userId,
+            exceptionSeverity);
     return this;
   }
 

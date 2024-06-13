@@ -14,4 +14,9 @@ public enum ExceptionSeverity {
   public String getDescription() {
     return description;
   }
+
+  @Override
+  public String toString() {
+    return "ExceptionSeverity{" + "description='" + description + '\'' + '}';
+  }
 }

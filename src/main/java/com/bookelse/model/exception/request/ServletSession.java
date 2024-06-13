@@ -1,6 +1,7 @@
 package com.bookelse.model.exception.request;
 
 import java.util.Map;
+import java.util.StringJoiner;
 
 public class ServletSession {
   private final String sessionId;
@@ -20,5 +21,16 @@ public class ServletSession {
     this.creationTime = creationTime;
     this.lastAccessTime = lastAccessTime;
     this.maxInactiveInterval = maxInactiveInterval;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ServletSession.class.getSimpleName() + "[", "]")
+        .add("attributes=" + attributes)
+        .add("sessionId='" + sessionId + "'")
+        .add("creationTime=" + creationTime)
+        .add("lastAccessTime=" + lastAccessTime)
+        .add("maxInactiveInterval=" + maxInactiveInterval)
+        .toString();
   }
 }

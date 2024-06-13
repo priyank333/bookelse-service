@@ -6,11 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BookelseServicesApplication {
-
+public class BookElseServicesApplication {
   public static void main(String[] args) {
-
-    SpringApplication.run(BookelseServicesApplication.class, args);
+    SpringApplication.run(BookElseServicesApplication.class, args);
   }
 
   @PostConstruct

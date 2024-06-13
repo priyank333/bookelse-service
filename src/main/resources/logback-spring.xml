@@ -1,0 +1,105 @@
+<configuration>
+
+    <property name="LOG_DIR" value="logs"/>
+
+    <property name="APPLICATION_LOGS_FILE_NAME" value="application"/>
+    <property name="SERVER_LOGS_FILE_NAME" value="server"/>
+    <property name="SPRING_JDBC_LOGS_FILE_NAME" value="spring-jdbc"/>
+    <property name="POSTGRESQL_LOGS_FILE_NAME" value="postgresql"/>
+
+    <property name="APPLICATION_LOGS_FILE_LOCATION" value="${LOG_DIR}/application/${APPLICATION_LOGS_FILE_NAME}.log"/>
+    <property name="SERVER_LOGS_FILE_LOCATION" value="${LOG_DIR}/server/${SERVER_LOGS_FILE_NAME}.log"/>
+    <property name="SPRING_JDBC_LOGS_FILE_LOCATION" value="${LOG_DIR}/jdbc/spring/${SPRING_JDBC_LOGS_FILE_NAME}.log"/>
+    <property name="POSTGRESQL_LOGS_FILE_LOCATION" value="${LOG_DIR}/postgresql/${POSTGRESQL_LOGS_FILE_NAME}.log"/>
+
+    <property name="APPLICATION_LOGS_FILE_PATTERN" value="${APPLICATION_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
+    <property name="SERVER_LOGS_FILE_PATTERN" value="${SERVER_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
+    <property name="SPRING_JDBC_LOGS_FILE_PATTERN" value="${SPRING_JDBC_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
+    <property name="POSTGRESQL_LOGS_FILE_PATTERN" value="${POSTGRESQL_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APPLICATION_LOGS_FILE_LOCATION}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${APPLICATION_LOGS_FILE_PATTERN}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{correlationId}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${SERVER_LOGS_FILE_LOCATION}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${SERVER_LOGS_FILE_PATTERN}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="JDBC" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${SPRING_JDBC_LOGS_FILE_LOCATION}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${SPRING_JDBC_LOGS_FILE_PATTERN}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="POSTGRESQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${POSTGRESQL_LOGS_FILE_LOCATION}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${POSTGRESQL_LOGS_FILE_PATTERN}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="SERVER"/>
+    </logger>
+
+    <logger name="org.springframework" level="ERROR">
+        <appender-ref ref="SERVER"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc" level="INFO">
+        <appender-ref ref="JDBC"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc" level="ERROR">
+        <appender-ref ref="JDBC"/>
+    </logger>
+
+    <logger name="org.postgresql" level="INFO">
+        <appender-ref ref="POSTGRESQL"/>
+    </logger>
+
+    <logger name="org.postgresql" level="ERROR">
+        <appender-ref ref="POSTGRESQL"/>
+    </logger>
+
+    <logger name="com.bookelse" level="ALL">
+        <appender-ref ref="APP"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

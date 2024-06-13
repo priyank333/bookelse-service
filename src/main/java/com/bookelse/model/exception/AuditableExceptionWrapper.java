@@ -8,6 +8,8 @@ import com.bookelse.util.json.JSONUtil;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.slf4j.MDC;
+import org.springframework.core.task.TaskExecutor;
 
 public class AuditableExceptionWrapper<T extends Throwable> {
   private final ExceptionId exceptionId;
@@ -23,7 +25,11 @@ public class AuditableExceptionWrapper<T extends Throwable> {
   private ServletWebRequest webRequest;
 
   public AuditableExceptionWrapper(
-      ExceptionId exceptionId, T throwable, String userId, ExceptionSeverity exceptionSeverity) {
+      ExceptionId exceptionId,
+      String correlationId,
+      Throwable throwable,
+      String userId,
+      ExceptionSeverity exceptionSeverity) {
     this.exceptionId = exceptionId;
     this.userId = userId;
     this.timestamp = LocalDateTime.now();
@@ -32,7 +38,7 @@ public class AuditableExceptionWrapper<T extends Throwable> {
     this.detailedMessage = throwable.toString();
     this.environment = "DEV";
     this.severity = exceptionSeverity;
-    this.correlationId = "";
+    this.correlationId = correlationId;
     this.additionalData = new HashMap<>();
   }
 
@@ -112,15 +118,57 @@ public class AuditableExceptionWrapper<T extends Throwable> {
     return JSONUtil.jsonToObject(json, Map.class);
   }
 
-  public boolean auditInDB() {
-    AuditableExceptionWrapper<T> insertedObj = null;
-    ExceptionAuditDAO exceptionAuditDAO =
-        ApplicationContextConfiguration.getApplicationContext().getBean(ExceptionAuditDAO.class);
-    try {
-      insertedObj = exceptionAuditDAO.addExceptionAudit(this);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
-    return !Objects.isNull(insertedObj);
+  public void auditInDB() {
+    ApplicationContextConfiguration.getApplicationContext()
+        .getBean("taskExecutor", TaskExecutor.class)
+        .execute(
+            () -> {
+              AuditableExceptionWrapper<T> insertedObj;
+              ExceptionAuditDAO exceptionAuditDAO =
+                  ApplicationContextConfiguration.getApplicationContext()
+                      .getBean(ExceptionAuditDAO.class);
+              try {
+                insertedObj = exceptionAuditDAO.addExceptionAudit(this);
+                if (Objects.isNull(insertedObj)) {
+                  throw new RuntimeException("Exception audit is not working");
+                }
+              } catch (SQLException e) {
+                throw new RuntimeException(e);
+              }
+            });
+  }
+
+  @Override
+  public String toString() {
+    return "AuditableExceptionWrapper{"
+        + "additionalData="
+        + additionalData
+        + ", exceptionId="
+        + exceptionId
+        + ", userId='"
+        + userId
+        + '\''
+        + ", timestamp="
+        + timestamp
+        + ", exceptionType='"
+        + exceptionType
+        + '\''
+        + ", stackTrace='"
+        + stackTrace
+        + '\''
+        + ", detailedMessage='"
+        + detailedMessage
+        + '\''
+        + ", environment='"
+        + environment
+        + '\''
+        + ", severity="
+        + severity
+        + ", correlationId='"
+        + correlationId
+        + '\''
+        + ", webRequest="
+        + webRequest
+        + '}';
   }
 }
