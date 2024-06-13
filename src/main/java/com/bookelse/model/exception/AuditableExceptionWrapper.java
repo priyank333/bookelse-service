@@ -8,7 +8,6 @@ import com.bookelse.util.json.JSONUtil;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
-import org.slf4j.MDC;
 import org.springframework.core.task.TaskExecutor;
 
 public class AuditableExceptionWrapper<T extends Throwable> {

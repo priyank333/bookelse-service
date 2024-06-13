@@ -16,8 +16,6 @@ import com.bookelse.util.datetime.DateTimeUtility;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataAccessException;
