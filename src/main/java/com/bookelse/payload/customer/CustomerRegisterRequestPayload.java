@@ -29,4 +29,27 @@ public record CustomerRegisterRequestPayload(
   public int hashCode() {
     return Objects.hash(firstName, lastName, emailId, password, countryCode, contact, zoneId);
   }
+
+  @Override
+  public String toString() {
+    return "CustomerRegisterRequestPayload{"
+        + "contact='"
+        + contact
+        + '\''
+        + ", countryCode='"
+        + countryCode
+        + '\''
+        + ", emailId='"
+        + emailId
+        + '\''
+        + ", firstName='"
+        + firstName
+        + '\''
+        + ", lastName='"
+        + lastName
+        + '\''
+        + ", zoneId="
+        + zoneId
+        + '}';
+  }
 }
