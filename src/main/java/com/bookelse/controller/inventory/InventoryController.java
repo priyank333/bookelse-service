@@ -1,7 +1,7 @@
 package com.bookelse.controller.inventory;
 
 import com.bookelse.payload.inventory.UpdateProductInventoryRequestPayload;
-import com.bookelse.service.InventoryService;
+import com.bookelse.service.BookInventoryService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("inventory")
 public class InventoryController {
 
-  private final InventoryService<?> inventoryService;
+  private final BookInventoryService bookBookInventoryService;
 
-  public InventoryController(@Qualifier("InventoryService") InventoryService<?> inventoryService) {
-    this.inventoryService = inventoryService;
+  public InventoryController(
+      @Qualifier("BookInventoryService") BookInventoryService bookBookInventoryService) {
+    this.bookBookInventoryService = bookBookInventoryService;
   }
 
-  @PostMapping("update-book-inventory")
+  @PostMapping("v1/update-book-inventory")
   public ResponseEntity<Integer> updateInventories(
       @RequestBody UpdateProductInventoryRequestPayload updateProductInventoryRequestPayload) {
-    int rows = inventoryService.updateInventories(updateProductInventoryRequestPayload);
+    int rows = bookBookInventoryService.updateInventories(updateProductInventoryRequestPayload);
     return ResponseEntity.status(HttpStatus.CREATED).body(rows);
   }
 }

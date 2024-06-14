@@ -3,7 +3,6 @@ package com.bookelse.model.user;
 import com.bookelse.model.common.*;
 import com.bookelse.model.id.CustomerId;
 import com.bookelse.model.id.Id;
-import com.bookelse.util.datetime.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -23,9 +22,8 @@ public class Customer extends User {
       Address address,
       BankAccount bankAccount,
       ZonedDateTime createdOn,
-      ZonedDateTime updatedOn,
-      ZoneId zoneId) {
-    super(userId, password, createdOn, updatedOn, zoneId);
+      ZonedDateTime updatedOn) {
+    super(userId, password, createdOn, updatedOn);
     this.name = name;
     this.emailId = emailId;
     this.contact = contact;
@@ -40,9 +38,8 @@ public class Customer extends User {
       EmailId emailId,
       Contact contact,
       ZonedDateTime createdOn,
-      ZonedDateTime updatedOn,
-      ZoneId zoneId) {
-    super(userId, password, createdOn, updatedOn, zoneId);
+      ZonedDateTime updatedOn) {
+    super(userId, password, createdOn, updatedOn);
     this.name = name;
     this.emailId = emailId;
     this.contact = contact;
@@ -54,9 +51,8 @@ public class Customer extends User {
       EmailId emailId,
       Contact contact,
       ZonedDateTime createdOn,
-      ZonedDateTime updatedOn,
-      ZoneId zoneId) {
-    super(new CustomerId(), password, createdOn, updatedOn, zoneId);
+      ZonedDateTime updatedOn) {
+    super(new CustomerId(), password, createdOn, updatedOn);
     this.name = name;
     this.emailId = emailId;
     this.contact = contact;

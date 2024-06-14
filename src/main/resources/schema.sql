@@ -16,8 +16,7 @@ CREATE TABLE IF NOT EXISTS bookelse.users
     country       VARCHAR(15),
     bnk_acc_name  VARCHAR(25),
     bnk_acc_no    VARCHAR(50),
-    bnk_ifsc_code VARCHAR(10),
-    zone_id       VARCHAR(25)                 NOT NULL,
+    bnk_ifsc_code VARCHAR(20),
     created_on    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     lst_update_on TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT users_pkey PRIMARY KEY (user_id)

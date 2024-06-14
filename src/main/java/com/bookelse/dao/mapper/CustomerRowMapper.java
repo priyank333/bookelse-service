@@ -7,9 +7,9 @@ import com.bookelse.model.common.*;
 import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.SequenceId;
 import com.bookelse.model.user.*;
-import com.bookelse.util.datetime.ZoneId;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 
@@ -19,10 +19,6 @@ public class CustomerRowMapper extends CustomRowMapper<Customer> {
   public Customer mapRow(ResultSet rs, int rowNum) {
     Set<String> columns = loadColumns(rs);
     try {
-      ZoneId zoneId =
-          columns.contains("zone_id")
-              ? ZoneId.getInstanceByZoneIdName(rs.getString("zone_id"))
-              : ZoneId.UTC;
       if (!columns.contains("user_id")) {
         RuntimeExceptionAuditable runtimeExceptionAuditable =
             new RuntimeExceptionAuditable(
@@ -58,9 +54,8 @@ public class CustomerRowMapper extends CustomRowMapper<Customer> {
                   rs.getString("bnk_acc_no"),
                   rs.getString("bnk_ifsc_code"))
               : null,
-          timestampToZonedDateTime(rs.getTimestamp("created_on"), zoneId),
-          timestampToZonedDateTime(rs.getTimestamp("lst_update_on"), zoneId),
-          zoneId);
+          timestampToZonedDateTime(rs.getTimestamp("created_on"), ZoneId.systemDefault()),
+          timestampToZonedDateTime(rs.getTimestamp("lst_update_on"), ZoneId.systemDefault()));
     } catch (SQLException e) {
       RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
       runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);

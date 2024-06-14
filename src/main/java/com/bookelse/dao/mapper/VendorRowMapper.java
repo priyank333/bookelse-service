@@ -8,9 +8,9 @@ import com.bookelse.model.exception.ExceptionSeverity;
 import com.bookelse.model.id.VendorId;
 import com.bookelse.model.vendor.Vendor;
 import com.bookelse.util.datetime.DateTimeUtility;
-import com.bookelse.util.datetime.ZoneId;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.Set;
 
 public class VendorRowMapper extends CustomRowMapper<Vendor> {
@@ -31,8 +31,10 @@ public class VendorRowMapper extends CustomRowMapper<Vendor> {
           new Contact(rs.getString("ctr_code"), rs.getString("vendor_contact")),
           new EmailId(rs.getString("email_id")),
           rs.getBoolean("is_active"),
-          DateTimeUtility.timestampToZonedDateTime(rs.getTimestamp("created_on"), ZoneId.UTC),
-          DateTimeUtility.timestampToZonedDateTime(rs.getTimestamp("lst_update_on"), ZoneId.UTC));
+          DateTimeUtility.timestampToZonedDateTime(
+              rs.getTimestamp("created_on"), ZoneId.systemDefault()),
+          DateTimeUtility.timestampToZonedDateTime(
+              rs.getTimestamp("lst_update_on"), ZoneId.systemDefault()));
     } catch (SQLException e) {
       RuntimeExceptionAuditable runtimeExceptionAuditable = new RuntimeExceptionAuditable(e);
       runtimeExceptionAuditable.wrapAuditableException("", ExceptionSeverity.HIGH);

@@ -1,7 +1,7 @@
 package com.bookelse.payload.customer;
 
-import com.bookelse.util.datetime.ZoneId;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public record CustomerRegisterRequestPayload(
     String firstName,
@@ -9,15 +9,13 @@ public record CustomerRegisterRequestPayload(
     String emailId,
     String password,
     String countryCode,
-    String contact,
-    ZoneId zoneId) {
+    String contact) {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CustomerRegisterRequestPayload that = (CustomerRegisterRequestPayload) o;
-    return zoneId == that.zoneId
-        && Objects.equals(emailId, that.emailId)
+    return Objects.equals(emailId, that.emailId)
         && Objects.equals(contact, that.contact)
         && Objects.equals(lastName, that.lastName)
         && Objects.equals(password, that.password)
@@ -27,29 +25,18 @@ public record CustomerRegisterRequestPayload(
 
   @Override
   public int hashCode() {
-    return Objects.hash(firstName, lastName, emailId, password, countryCode, contact, zoneId);
+    return Objects.hash(firstName, lastName, emailId, password, countryCode, contact);
   }
 
   @Override
   public String toString() {
-    return "CustomerRegisterRequestPayload{"
-        + "contact='"
-        + contact
-        + '\''
-        + ", countryCode='"
-        + countryCode
-        + '\''
-        + ", emailId='"
-        + emailId
-        + '\''
-        + ", firstName='"
-        + firstName
-        + '\''
-        + ", lastName='"
-        + lastName
-        + '\''
-        + ", zoneId="
-        + zoneId
-        + '}';
+    return new StringJoiner(", ", CustomerRegisterRequestPayload.class.getSimpleName() + "[", "]")
+        .add("contact='" + contact + "'")
+        .add("firstName='" + firstName + "'")
+        .add("lastName='" + lastName + "'")
+        .add("emailId='" + emailId + "'")
+        .add("password='" + password + "'")
+        .add("countryCode='" + countryCode + "'")
+        .toString();
   }
 }

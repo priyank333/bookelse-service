@@ -16,15 +16,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("InventoryService")
-public class InventoryService<PType extends Product> {
-  private final VendorService vendorService;
-  private final ProductService productService;
-  private final InventoryDAO inventoryDAO;
+public abstract class InventoryService<PType extends Product> {
+  protected final VendorService vendorService;
+  protected final ProductService productService;
+  protected final InventoryDAO inventoryDAO;
 
   protected InventoryService(
-      @Qualifier("VendorService") VendorService vendorService,
+      VendorService vendorService,
       @Qualifier("ProductService") ProductService productService,
-      @Qualifier("InventoryDAO") InventoryDAO inventoryDAO) {
+      InventoryDAO inventoryDAO) {
     this.vendorService = vendorService;
     this.productService = productService;
     this.inventoryDAO = inventoryDAO;

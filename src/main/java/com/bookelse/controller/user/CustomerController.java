@@ -43,8 +43,7 @@ public class CustomerController {
                 customerRegisterRequestPayload.countryCode(),
                 customerRegisterRequestPayload.contact()),
             DateTimeUtility.getCurrentUTCDateTime(),
-            DateTimeUtility.getCurrentUTCDateTime(),
-            customerRegisterRequestPayload.zoneId());
+            DateTimeUtility.getCurrentUTCDateTime());
     customer = customerService.registerUser(customer);
     return ResponseEntity.status(HttpStatus.OK).body(customer);
   }

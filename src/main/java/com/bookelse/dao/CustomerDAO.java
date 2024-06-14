@@ -71,8 +71,7 @@ public class CustomerDAO implements UserDAO<Customer> {
         .addArgument(DateTimeUtility.zonedDateTimeToTimestamp(user.getCreatedOn()))
         .addArgument(DateTimeUtility.zonedDateTimeToTimestamp(user.getUpdatedOn()))
         .addArgument(user.getContact().getContact())
-        .addArgument(user.getContact().getCountryCode())
-        .addArgument(user.getZoneId().getZoneIdName());
+        .addArgument(user.getContact().getCountryCode());
     insertQueryExecutor.execute();
     return insertQueryExecutor.getNoOfRowsAffected() > 0 ? user : null;
   }

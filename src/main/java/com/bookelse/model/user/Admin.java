@@ -2,7 +2,6 @@ package com.bookelse.model.user;
 
 import com.bookelse.model.common.Password;
 import com.bookelse.model.id.Id;
-import com.bookelse.util.datetime.ZoneId;
 import java.time.ZonedDateTime;
 
 public class Admin extends User {
@@ -13,9 +12,8 @@ public class Admin extends User {
       Password password,
       ZonedDateTime createdOn,
       ZonedDateTime updatedOn,
-      ZoneId zoneId,
       String userName) {
-    super(userId, password, createdOn, updatedOn, zoneId);
+    super(userId, password, createdOn, updatedOn);
     this.userName = userName;
   }
 
@@ -24,9 +22,8 @@ public class Admin extends User {
       String userName,
       Password password,
       ZonedDateTime createdOn,
-      ZonedDateTime updatedOn,
-      ZoneId zoneId) {
-    return new Admin(userId, password, createdOn, updatedOn, zoneId, userName);
+      ZonedDateTime updatedOn) {
+    return new Admin(userId, password, createdOn, updatedOn, userName);
   }
 
   public String getUserName() {

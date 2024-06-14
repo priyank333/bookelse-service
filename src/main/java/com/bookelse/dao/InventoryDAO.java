@@ -22,7 +22,7 @@ public class InventoryDAO {
   protected final JdbcTemplate jdbcTemplate;
 
   @Value("${inventory.add-inventories}")
-  private String addProductBookQuery;
+  private String addInventoriesQuery;
 
   public InventoryDAO() {
     jdbcTemplate =
@@ -32,7 +32,7 @@ public class InventoryDAO {
   public int addInventoriesInDB(List<Inventory<?>> inventories) {
     BatchInsertQueryExecutor batchInsertQueryExecutor =
         new BatchInsertQueryExecutor(
-            addProductBookQuery,
+            addInventoriesQuery,
             new BatchPreparedStatementSetter() {
               @Override
               public void setValues(PreparedStatement ps, int i) {

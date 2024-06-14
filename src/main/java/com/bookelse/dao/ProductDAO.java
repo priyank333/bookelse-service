@@ -1,6 +1,8 @@
 package com.bookelse.dao;
 
 import com.bookelse.config.ApplicationContextConfiguration;
+import com.bookelse.config.transaction.holder.TransactionDefinitionHolder;
+import com.bookelse.config.transaction.holder.TransactionManagerHolder;
 import com.bookelse.dao.executor.InsertQueryExecutor;
 import com.bookelse.exceptions.RuntimeExceptionAuditable;
 import com.bookelse.model.exception.ExceptionSeverity;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Repository("ProductDAO")
 @PropertySource("classpath:sql/product-query.properties")
@@ -42,7 +46,7 @@ public class ProductDAO {
     }
   }
 
-  protected Product addInProductTable(Product product)  {
+  protected Product addInProductTable(Product product) {
     InsertQueryExecutor<?> insertQueryExecutor =
         new InsertQueryExecutor<>(addProductQuery, jdbcTemplate);
     insertQueryExecutor

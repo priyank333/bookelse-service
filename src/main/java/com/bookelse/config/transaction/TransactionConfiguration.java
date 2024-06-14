@@ -3,6 +3,7 @@ package com.bookelse.config.transaction;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -10,6 +11,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @EnableTransactionManagement
 @Configuration
+@Scope(scopeName = "prototype")
 public class TransactionConfiguration {
   @Bean("DefaultTransactionDefinition")
   public DefaultTransactionDefinition defaultTransactionDefinition() {
