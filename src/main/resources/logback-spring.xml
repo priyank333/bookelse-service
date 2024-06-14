@@ -1,6 +1,7 @@
 <configuration>
 
     <property name="LOG_DIR" value="logs"/>
+    <property name="ARCHIVE_DIR" value="logs/archived-logs"/>
 
     <property name="APPLICATION_LOGS_FILE_NAME" value="application"/>
     <property name="SERVER_LOGS_FILE_NAME" value="server"/>
@@ -12,10 +13,14 @@
     <property name="SPRING_JDBC_LOGS_FILE_LOCATION" value="${LOG_DIR}/jdbc/spring/${SPRING_JDBC_LOGS_FILE_NAME}.log"/>
     <property name="POSTGRESQL_LOGS_FILE_LOCATION" value="${LOG_DIR}/postgresql/${POSTGRESQL_LOGS_FILE_NAME}.log"/>
 
-    <property name="APPLICATION_LOGS_FILE_PATTERN" value="${APPLICATION_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
-    <property name="SERVER_LOGS_FILE_PATTERN" value="${SERVER_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
-    <property name="SPRING_JDBC_LOGS_FILE_PATTERN" value="${SPRING_JDBC_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
-    <property name="POSTGRESQL_LOGS_FILE_PATTERN" value="${POSTGRESQL_LOGS_FILE_NAME}.%d{yyyy-MM-dd}.log"/>
+    <property name="APPLICATION_LOGS_FILE_PATTERN"
+              value="${ARCHIVE_DIR}/application/${APPLICATION_LOGS_FILE_NAME}.%d{yyyy-MM-dd-HH}.log"/>
+    <property name="SERVER_LOGS_FILE_PATTERN"
+              value="${ARCHIVE_DIR}/server/${SERVER_LOGS_FILE_NAME}.%d{yyyy-MM-dd-HH}.log"/>
+    <property name="SPRING_JDBC_LOGS_FILE_PATTERN"
+              value="${ARCHIVE_DIR}/jdbc/spring/${SPRING_JDBC_LOGS_FILE_NAME}.%d{yyyy-MM-dd-HH}.log"/>
+    <property name="POSTGRESQL_LOGS_FILE_PATTERN"
+              value="${ARCHIVE_DIR}/postgresql/${POSTGRESQL_LOGS_FILE_NAME}.%d{yyyy-MM-dd-HH}.log"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
